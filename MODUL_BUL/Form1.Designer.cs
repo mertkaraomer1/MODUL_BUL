@@ -35,6 +35,7 @@
             textBox2 = new TextBox();
             button1 = new Button();
             advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
+            button2 = new Button();
             ((System.ComponentModel.ISupportInitialize)advancedDataGridView1).BeginInit();
             SuspendLayout();
             // 
@@ -103,12 +104,24 @@
             advancedDataGridView1.SortStringChangedInvokeBeforeDatasourceUpdate = true;
             advancedDataGridView1.TabIndex = 5;
             // 
+            // button2
+            // 
+            button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            button2.Location = new Point(462, 29);
+            button2.Name = "button2";
+            button2.Size = new Size(94, 71);
+            button2.TabIndex = 6;
+            button2.Text = "KAYIT ET";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gray;
             ClientSize = new Size(1902, 1033);
+            Controls.Add(button2);
             Controls.Add(advancedDataGridView1);
             Controls.Add(button1);
             Controls.Add(textBox2);
@@ -133,5 +146,6 @@
         private TextBox textBox2;
         private Button button1;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
+        private Button button2;
     }
 }
