@@ -12,6 +12,7 @@ namespace MODUL_BUL.Tables
         public string proje_no { get; set; }
         public string resim_no { get; set; }
         public string modul_no { get; set; }
+        public string Modul_kod {  get; set; }
         public int Adet {  get; set; }
     }
 }
