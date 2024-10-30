@@ -33,6 +33,7 @@ namespace MODUL_BUL
             table.Columns.Add("RESÝM NO");
             table.Columns.Add("MODÜL NO");
             table.Columns.Add("MODÜL2 NO");
+            table.Columns.Add("ÜNÝTE ADI");
             table.Columns.Add("ADET");
 
 
@@ -95,12 +96,11 @@ namespace MODUL_BUL
                     {
                         x.upl_urstokkod
                     }).FirstOrDefault();
-
-                // Modul_Bul tablosunu kontrol et
-                bool checkboxValue = Tcontext.Modul_Bul.Any(m => m.resim_no == resim.upl_kodu&&m.proje_no==projekod&&m.modul_no==rsa3.upl_kodu);
+                // STOKLAR tablosundan sto_kod ile eþleþen veriyi bul
+                var stokVerisi = dbContext.STOKLAR.FirstOrDefault(stok => stok.sto_kod == rsa4.upl_urstokkod);
 
                 // Satýrý ekle ve checkbox durumunu ayarla
-                table.Rows.Add(sayac++, resim.upl_kodu, rsa3.upl_kodu, rsa4.upl_urstokkod, resim.upl_miktar);
+                table.Rows.Add(sayac++, resim.upl_kodu, rsa3.upl_kodu, rsa4.upl_urstokkod,stokVerisi.sto_isim, resim.upl_miktar);
             }
 
             advancedDataGridView1.DataSource = table;
@@ -108,7 +108,8 @@ namespace MODUL_BUL
             // Checkbox sütununu güncelle
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
             {
-                bool isChecked = Tcontext.Modul_Bul.Any(m => m.resim_no == row.Cells["RESÝM NO"].Value.ToString());
+                bool isChecked = Tcontext.Modul_Bul.Any(m => m.resim_no == row.Cells["RESÝM NO"].Value.ToString()&&m.proje_no==projekod&&
+                m.modul_no == row.Cells["MODÜL NO"].Value.ToString() && m.Satýr_no== row.Cells["SATIR NO"].Value.ToString());
                 row.Cells["checkBoxColumn1"].Value = isChecked; // "T" sütununu güncelle
             }
 
@@ -122,31 +123,54 @@ namespace MODUL_BUL
             {
                 string projeno = textBox1.Text; // Proje numarasýný al
 
+                // Checkbox'ýn deðerini kontrol et
                 foreach (DataGridViewRow row in advancedDataGridView1.Rows)
                 {
+                    string resimno = row.Cells["RESÝM NO"].Value?.ToString();
+                    string modülno = row.Cells["MODÜL NO"].Value?.ToString();
+                    string modulkod = row.Cells["MODÜL2 NO"].Value?.ToString();
+                    int adet = Convert.ToInt32(row.Cells["ADET"].Value?.ToString());
+                    string satýrno = row.Cells["SATIR NO"].Value?.ToString();
+
                     // Checkbox'ýn deðerini kontrol et
-                    if (Convert.ToBoolean(row.Cells["checkBoxColumn1"].Value) == true)
+                    if (Convert.ToBoolean(row.Cells["checkBoxColumn1"].Value)==true) // Burayý güncelledik
                     {
-                        // Satýrdan gerekli verileri al
-                        string resimno = row.Cells["RESÝM NO"].Value?.ToString();
-                        string modülno = row.Cells["MODÜL NO"].Value?.ToString();
-                        string modulkod = row.Cells["MODÜL2 NO"].Value?.ToString();
-                        int adet = Convert.ToInt32(row.Cells["ADET"].Value?.ToString());
+                        // Veritabanýnda kayýt olup olmadýðýný kontrol et
+                        var existingEntry = context.Modul_Bul
+                            .FirstOrDefault(m => m.proje_no == projeno && m.resim_no == resimno && m.modul_no == modülno&&m.Satýr_no==satýrno);
 
-                        // Yeni bir Modul_Bul nesnesi oluþtur
-                        var newEntry = new Modul_Bul
+                        // Eðer kayýt yoksa yeni bir Modul_Bul nesnesi oluþtur
+                        if (existingEntry == null)
                         {
-                            proje_no = projeno,
-                            resim_no = resimno,
-                            modul_no = modülno,
-                            Modul_kod = modulkod,
-                            Adet = adet
-                        };
+                            var newEntry = new Modul_Bul
+                            {
+                                proje_no = projeno,
+                                resim_no = resimno,
+                                modul_no = modülno,
+                                Modul_kod = modulkod,
+                                Adet = adet,
+                                Satýr_no = satýrno
+                            };
 
-                        // Yeni nesneyi DbSet'e ekle
-                        context.Modul_Bul.Add(newEntry);
+                            // Yeni nesneyi DbSet'e ekle
+                            context.Modul_Bul.Add(newEntry);
+                        }
+                    }
+                    else
+                    {
+                        // Checkbox boþsa veritabanýnda varsa sil
+                        var existingEntry = context.Modul_Bul.FirstOrDefault(m => m.proje_no == projeno && m.resim_no == resimno && m.modul_no == modülno&&m.Satýr_no==satýrno);
+
+                        if (existingEntry != null)
+                        {
+                            context.Modul_Bul.Remove(existingEntry);
+                        }
                     }
                 }
+
+                // Deðiþiklikleri kaydet
+                context.SaveChanges();
+
 
                 try
                 {

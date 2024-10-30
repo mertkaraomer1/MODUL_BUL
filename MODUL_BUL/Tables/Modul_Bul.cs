@@ -9,6 +9,7 @@ namespace MODUL_BUL.Tables
     public class Modul_Bul
     {
         public int M_Id {  get; set; }
+        public string Satır_no { get; set; }
         public string proje_no { get; set; }
         public string resim_no { get; set; }
         public string modul_no { get; set; }

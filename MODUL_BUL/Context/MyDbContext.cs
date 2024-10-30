@@ -13,6 +13,7 @@ namespace MODUL_BUL.Context
         public DbSet<ISEMIRLERI> ISEMIRLERI { get; set; }
         public DbSet<URETIM_MALZEME_PLANLAMA> URETIM_MALZEME_PLANLAMA { get; set; }
         public DbSet<ISEMIRLERI_USER> ISEMIRLERI_USER { get; set; }
+        public DbSet<STOKLAR> STOKLAR { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // Burada veritabanı bağlantı bilgilerini tanımlayın.
@@ -28,7 +29,7 @@ namespace MODUL_BUL.Context
             // Tablo adını ve sütun adlarını özelleştirme
             modelBuilder.Entity<URETIM_MALZEME_PLANLAMA>().ToTable("URETIM_MALZEME_PLANLAMA").HasKey(x => x.upl_Guid);
             modelBuilder.Entity<ISEMIRLERI_USER>().ToTable("ISEMIRLERI_USER").HasKey(x => x.Record_uid);
-          
+            modelBuilder.Entity<STOKLAR>().ToTable("STOKLAR").HasKey(x => x.sto_Guid);
         }
     }
 }
