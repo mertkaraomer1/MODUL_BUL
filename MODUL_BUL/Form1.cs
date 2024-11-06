@@ -100,7 +100,7 @@ namespace MODUL_BUL
                 var stokVerisi = dbContext.STOKLAR.FirstOrDefault(stok => stok.sto_kod == rsa4.upl_urstokkod);
 
                 // Satýrý ekle ve checkbox durumunu ayarla
-                table.Rows.Add(sayac++, resim.upl_kodu, rsa3.upl_kodu, rsa4.upl_urstokkod,stokVerisi.sto_isim, resim.upl_miktar);
+                table.Rows.Add(sayac++, resim.upl_kodu, rsa3.upl_kodu, rsa4.upl_urstokkod, stokVerisi.sto_isim, resim.upl_miktar);
             }
 
             advancedDataGridView1.DataSource = table;
@@ -108,8 +108,8 @@ namespace MODUL_BUL
             // Checkbox sütununu güncelle
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
             {
-                bool isChecked = Tcontext.Modul_Bul.Any(m => m.resim_no == row.Cells["RESÝM NO"].Value.ToString()&&m.proje_no==projekod&&
-                m.modul_no == row.Cells["MODÜL NO"].Value.ToString() && m.Satýr_no== row.Cells["SATIR NO"].Value.ToString());
+                bool isChecked = Tcontext.Modul_Bul.Any(m => m.resim_no == row.Cells["RESÝM NO"].Value.ToString() && m.proje_no == projekod &&
+                m.modul_no == row.Cells["MODÜL NO"].Value.ToString() && m.Satýr_no == row.Cells["SATIR NO"].Value.ToString());
                 row.Cells["checkBoxColumn1"].Value = isChecked; // "T" sütununu güncelle
             }
 
@@ -133,11 +133,11 @@ namespace MODUL_BUL
                     string satýrno = row.Cells["SATIR NO"].Value?.ToString();
 
                     // Checkbox'ýn deðerini kontrol et
-                    if (Convert.ToBoolean(row.Cells["checkBoxColumn1"].Value)==true) // Burayý güncelledik
+                    if (Convert.ToBoolean(row.Cells["checkBoxColumn1"].Value) == true) // Burayý güncelledik
                     {
                         // Veritabanýnda kayýt olup olmadýðýný kontrol et
                         var existingEntry = context.Modul_Bul
-                            .FirstOrDefault(m => m.proje_no == projeno && m.resim_no == resimno && m.modul_no == modülno&&m.Satýr_no==satýrno);
+                            .FirstOrDefault(m => m.proje_no == projeno && m.resim_no == resimno && m.modul_no == modülno && m.Satýr_no == satýrno);
 
                         // Eðer kayýt yoksa yeni bir Modul_Bul nesnesi oluþtur
                         if (existingEntry == null)
@@ -159,7 +159,7 @@ namespace MODUL_BUL
                     else
                     {
                         // Checkbox boþsa veritabanýnda varsa sil
-                        var existingEntry = context.Modul_Bul.FirstOrDefault(m => m.proje_no == projeno && m.resim_no == resimno && m.modul_no == modülno&&m.Satýr_no==satýrno);
+                        var existingEntry = context.Modul_Bul.FirstOrDefault(m => m.proje_no == projeno && m.resim_no == resimno && m.modul_no == modülno && m.Satýr_no == satýrno);
 
                         if (existingEntry != null)
                         {
@@ -187,6 +187,12 @@ namespace MODUL_BUL
 
 
 
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            RAPOR RP=new RAPOR();
+            RP.Show();
         }
     }
 
