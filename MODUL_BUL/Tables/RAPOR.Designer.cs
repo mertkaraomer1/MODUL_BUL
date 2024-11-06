@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RAPOR));
             groupBox1 = new GroupBox();
             comboBox2 = new ComboBox();
             comboBox1 = new ComboBox();
@@ -133,6 +134,7 @@
             ClientSize = new Size(884, 809);
             Controls.Add(advancedDataGridView1);
             Controls.Add(groupBox1);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "RAPOR";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "RAPOR";
