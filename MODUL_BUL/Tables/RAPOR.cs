@@ -75,7 +75,8 @@ namespace MODUL_BUL.Tables
                     uretim => uretim.upl_isemri,
                     isEmir => isEmir.is_BagliOlduguIsemri,
                     (uretim, isEmir) => new { Uretim = uretim, IsEmir = isEmir })
-                .Where(joined => joined.Uretim.upl_urstokkod == unitKod && joined.IsEmir.is_ProjeKodu == projeKodu)
+                .Where(joined => joined.Uretim.upl_urstokkod == unitKod && joined.IsEmir.is_ProjeKodu == projeKodu
+                &&!joined.Uretim.upl_kodu.StartsWith("DIN"))
                 .GroupBy(joined => new { joined.Uretim.upl_kodu })
                 .Select(group => group.Key.upl_kodu + ".01.014")
                 .ToList();
@@ -88,7 +89,7 @@ namespace MODUL_BUL.Tables
             comboBox2.DataSource = modülListesi;
 
         }
-        DataTable table= new DataTable();
+        DataTable table = new DataTable();
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             string projeKodu = textBox1.Text;
@@ -107,7 +108,9 @@ namespace MODUL_BUL.Tables
                     isem => isem.is_Kod,
                     (ump, isem) => new { Ump = ump, Isem = isem })
                 .Where(joined => joined.Isem.is_ProjeKodu == projeKodu &&
-                                 joined.Ump.upl_urstokkod == modülkod)
+                                 joined.Ump.upl_urstokkod == modülkod &&
+                                 //!joined.Ump.upl_kodu.StartsWith("DIN") &&
+                                 !joined.Ump.upl_kodu.StartsWith("06."))
                 .Select(joined => new
                 {
                     // İstediğiniz alanları buraya ekleyebilirsiniz
@@ -116,15 +119,76 @@ namespace MODUL_BUL.Tables
                 .ToList();
             int sayac = 1;
             foreach (var item in sonuc)
-            { 
-                table.Rows.Add(sayac++,item.upl_kodu);
+            {
+                table.Rows.Add(sayac++, item.upl_kodu);
             }
             advancedDataGridView1.DataSource = table;
             // Checkbox sütununu güncelle
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
             {
-                bool isChecked = Tcontext.Modul_Bul.Any(m => m.resim_no == row.Cells["PARÇA NO"].Value.ToString() && m.proje_no == projeKodu && (m.modul_no.Substring(0,13) == modülkod.Substring(0, 13) || m.modul_no.Substring(0, 13) == modülkod.Substring(0, 13)) && m.Modul_kod.Substring(0, 13) == ünitekod.Substring(0, 13));
+                bool isChecked = Tcontext.Modul_Bul.Any(m => m.resim_no == row.Cells["PARÇA NO"].Value.ToString() && m.proje_no == projeKodu && (m.modul_no.Substring(0, 13) == modülkod.Substring(0, 13) || m.modul_no.Substring(0, 13) == modülkod.Substring(0, 13)) && m.Modul_kod.Substring(0, 13) == ünitekod.Substring(0, 13));
                 row.Cells["checkBoxColumn1"].Value = isChecked; // "T" sütununu güncelle
+            }
+
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            // DataGridView'deki verileri bir DataTable'a kopyalayın
+            DataTable dt = new DataTable();
+
+            foreach (DataGridViewColumn column in advancedDataGridView1.Columns)
+            {
+                // Eğer ValueType null ise, varsayılan bir veri türü kullanabilirsiniz.
+                Type columnType = column.ValueType ?? typeof(string);
+                dt.Columns.Add(column.HeaderText, columnType);
+            }
+
+            // Satırları ekle
+            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+            {
+                if (!row.IsNewRow) // Yeni satırı atla
+                {
+                    DataRow dataRow = dt.NewRow();
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        dataRow[cell.ColumnIndex] = cell.Value;
+                    }
+                    dt.Rows.Add(dataRow);
+                }
+            }
+
+            // Excel uygulamasını başlatın
+            Microsoft.Office.Interop.Excel.Application excelApp = new Microsoft.Office.Interop.Excel.Application();
+            excelApp.Visible = true;
+
+            // Yeni bir Excel çalışma kitabı oluşturun
+            Microsoft.Office.Interop.Excel.Workbook workbook = excelApp.Workbooks.Add(Type.Missing);
+            Microsoft.Office.Interop.Excel.Worksheet worksheet = (Microsoft.Office.Interop.Excel.Worksheet)workbook.Sheets[1];
+
+            // textBox1, comboBox1 ve comboBox2'deki verileri yaz
+            worksheet.Cells[1, 1] = textBox1.Text; // 1. satır, 1. sütun
+            worksheet.Cells[2, 1] = comboBox1.Text; // 2. satır, 1. sütun
+            worksheet.Cells[3, 1] = comboBox2.Text; // 3. satır, 1. sütun
+
+            // DataTable'ı Excel çalışma sayfasına aktarın (tablo başlıklarını da dahil etmek için)
+            int rowIndex = 4; // Veriler 4. satırdan başlayacak
+
+            // Başlıkları yaz
+            for (int j = 0; j < dt.Columns.Count; j++)
+            {
+                worksheet.Cells[rowIndex, j + 1] = dt.Columns[j].ColumnName;
+                worksheet.Cells[rowIndex, j + 1].Font.Bold = true;
+            }
+
+            // Verileri yaz
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                rowIndex++;
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    worksheet.Cells[rowIndex, j + 1] = dt.Rows[i][j].ToString();
+                }
             }
 
         }

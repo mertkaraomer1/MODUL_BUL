@@ -37,8 +37,11 @@
             label2 = new Label();
             label1 = new Label();
             advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
+            toolStrip1 = new ToolStrip();
+            toolStripButton1 = new ToolStripButton();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)advancedDataGridView1).BeginInit();
+            toolStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // groupBox1
@@ -49,7 +52,7 @@
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(label1);
-            groupBox1.Location = new Point(12, 12);
+            groupBox1.Location = new Point(12, 28);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(284, 149);
             groupBox1.TabIndex = 0;
@@ -126,12 +129,34 @@
             advancedDataGridView1.SortStringChangedInvokeBeforeDatasourceUpdate = true;
             advancedDataGridView1.TabIndex = 1;
             // 
+            // toolStrip1
+            // 
+            toolStrip1.BackColor = Color.DimGray;
+            toolStrip1.ImageScalingSize = new Size(20, 20);
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1 });
+            toolStrip1.Location = new Point(0, 0);
+            toolStrip1.Name = "toolStrip1";
+            toolStrip1.Size = new Size(884, 27);
+            toolStrip1.TabIndex = 2;
+            toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
+            toolStripButton1.ImageTransparentColor = Color.Magenta;
+            toolStripButton1.Name = "toolStripButton1";
+            toolStripButton1.Size = new Size(29, 24);
+            toolStripButton1.Text = "toolStripButton1";
+            toolStripButton1.Click += toolStripButton1_Click;
+            // 
             // RAPOR
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gray;
             ClientSize = new Size(884, 809);
+            Controls.Add(toolStrip1);
             Controls.Add(advancedDataGridView1);
             Controls.Add(groupBox1);
             Icon = (Icon)resources.GetObject("$this.Icon");
@@ -141,7 +166,10 @@
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)advancedDataGridView1).EndInit();
+            toolStrip1.ResumeLayout(false);
+            toolStrip1.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -154,5 +182,7 @@
         private Label label2;
         private Label label1;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
+        private ToolStrip toolStrip1;
+        private ToolStripButton toolStripButton1;
     }
 }

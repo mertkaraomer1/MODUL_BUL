@@ -73,7 +73,7 @@ namespace MODUL_BUL
                     x.i.is_BagliOlduguIsemri,
                     x.u.upl_kodu,
                     x.u.upl_miktar,
-                })
+                }).Distinct()
                 .ToList();
 
             int sayac = 1;
