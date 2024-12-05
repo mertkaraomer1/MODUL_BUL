@@ -1,13 +1,5 @@
 ﻿using MODUL_BUL.Context;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace MODUL_BUL.Tables
 {
@@ -101,26 +93,36 @@ namespace MODUL_BUL.Tables
             table.Clear();
             table.Columns.Add("SATIR NO");
             table.Columns.Add("PARÇA NO");
+            table.Columns.Add("PARÇA ADI");
+            table.Columns.Add("ADET");
 
             var sonuc = dbContext.URETIM_MALZEME_PLANLAMA
-                .Join(dbContext.ISEMIRLERI,
-                    ump => ump.upl_isemri,
-                    isem => isem.is_Kod,
-                    (ump, isem) => new { Ump = ump, Isem = isem })
-                .Where(joined => joined.Isem.is_ProjeKodu == projeKodu &&
-                                 joined.Ump.upl_urstokkod == modülkod &&
-                                 //!joined.Ump.upl_kodu.StartsWith("DIN") &&
-                                 !joined.Ump.upl_kodu.StartsWith("06."))
-                .Select(joined => new
-                {
-                    // İstediğiniz alanları buraya ekleyebilirsiniz
-                    joined.Ump.upl_kodu
-                })
-                .ToList();
+             .Join(dbContext.ISEMIRLERI,
+                 ump => ump.upl_isemri,
+                 isem => isem.is_Kod,
+                 (ump, isem) => new { Ump = ump, Isem = isem })
+             .Where(joined => joined.Isem.is_ProjeKodu == projeKodu &&
+                              joined.Ump.upl_urstokkod == modülkod &&
+                              //!joined.Ump.upl_kodu.StartsWith("DIN") &&
+                              !joined.Ump.upl_kodu.StartsWith("06."))
+             .Join(dbContext.STOKLAR,
+                 joined => joined.Ump.upl_kodu, // STOKLAR ile birleştirme koşulu
+                 stok => stok.sto_kod, // STOKLAR'daki karşılık gelen alan
+                 (joined, stok) => new
+                 {
+                     // İstediğiniz alanları buraya ekleyebilirsiniz
+                     joined.Ump.upl_kodu,
+                     stok.sto_isim,
+                     joined.Ump.upl_miktar,
+
+
+                 })
+             .ToList();
+
             int sayac = 1;
             foreach (var item in sonuc)
             {
-                table.Rows.Add(sayac++, item.upl_kodu);
+                table.Rows.Add(sayac++, item.upl_kodu,item.sto_isim, item.upl_miktar);
             }
             advancedDataGridView1.DataSource = table;
             // Checkbox sütununu güncelle

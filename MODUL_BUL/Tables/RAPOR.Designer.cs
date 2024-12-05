@@ -115,6 +115,7 @@
             // 
             advancedDataGridView1.AllowUserToAddRows = false;
             advancedDataGridView1.AllowUserToDeleteRows = false;
+            advancedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             advancedDataGridView1.BackgroundColor = Color.White;
             advancedDataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             advancedDataGridView1.FilterAndSortEnabled = true;
