@@ -39,6 +39,7 @@
             advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             toolStrip1 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
+            button1 = new Button();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)advancedDataGridView1).BeginInit();
             toolStrip1.SuspendLayout();
@@ -46,6 +47,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(button1);
             groupBox1.Controls.Add(comboBox2);
             groupBox1.Controls.Add(comboBox1);
             groupBox1.Controls.Add(textBox1);
@@ -54,7 +56,7 @@
             groupBox1.Controls.Add(label1);
             groupBox1.Location = new Point(12, 28);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(284, 149);
+            groupBox1.Size = new Size(323, 149);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             // 
@@ -151,6 +153,16 @@
             toolStripButton1.Text = "toolStripButton1";
             toolStripButton1.Click += toolStripButton1_Click;
             // 
+            // button1
+            // 
+            button1.Location = new Point(279, 54);
+            button1.Name = "button1";
+            button1.Size = new Size(38, 35);
+            button1.TabIndex = 6;
+            button1.Text = "OK";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // RAPOR
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -185,5 +197,6 @@
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
         private ToolStrip toolStrip1;
         private ToolStripButton toolStripButton1;
+        private Button button1;
     }
 }
