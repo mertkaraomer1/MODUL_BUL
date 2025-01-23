@@ -48,7 +48,7 @@ namespace MODUL_BUL
                     ýs => ýs.i.is_Guid,
                     iu => iu.Record_uid,
                     (ýs, iu) => new { ýs, iu })
-                .Where(x => x.ýs.u.upl_kodu.Contains(".")  &&
+                .Where(x => (x.ýs.u.upl_kodu.Contains(".")|| x.ýs.u.upl_kodu.StartsWith("DIN"))  &&
                             !string.IsNullOrEmpty(x.ýs.u.upl_urstokkod) && x.ýs.i.is_ProjeKodu == projekod
                             && !string.IsNullOrEmpty(x.ýs.i.is_BagliOlduguIsemri)
                             && x.iu.is_emri_tipi == "KK_IE")
@@ -62,7 +62,7 @@ namespace MODUL_BUL
                     i => i.is_Kod,
                     (u, i) => new { u, i }
                 )
-                .Where(x => x.u.upl_kodu.Contains(".")  &&
+                .Where(x =>( x.u.upl_kodu.Contains(".")|| x.u.upl_kodu.StartsWith("DIN"))  &&
                             rsa1.Contains(x.u.upl_isemri) &&
                             !string.IsNullOrEmpty(x.u.upl_urstokkod) &&
                             x.i.is_ProjeKodu == projekod &&
@@ -79,7 +79,7 @@ namespace MODUL_BUL
             foreach (var resim in rsa2)
             {
                 var rsa3 = dbContext.URETIM_MALZEME_PLANLAMA
-                .Where(x => x.upl_kodu.Contains(".") &&
+                .Where(x => (x.upl_kodu.Contains(".")|| x.upl_kodu.StartsWith("DIN")) &&
                             resim.is_BagliOlduguIsemri == x.upl_isemri &&
                             !string.IsNullOrEmpty(x.upl_urstokkod))
                 .Select(x => new
@@ -90,7 +90,7 @@ namespace MODUL_BUL
                 }).FirstOrDefault();
 
                 var rsa4 = dbContext.URETIM_MALZEME_PLANLAMA
-                    .Where(x => x.upl_kodu.Contains(rsa3.upl_urstokkod.Substring(0, 13)) && x.upl_kodu.Contains(".") &&
+                    .Where(x => x.upl_kodu.Contains(rsa3.upl_urstokkod.Substring(0, 13)) && (x.upl_kodu.Contains(".")|| x.upl_kodu.StartsWith("DIN")) &&
                                 !string.IsNullOrEmpty(x.upl_urstokkod)&&x.upl_isemri.Substring(0,8)==rsa3.isemri)
                     .Select(x => new
                     {
