@@ -105,7 +105,7 @@
             advancedDataGridView1.Name = "advancedDataGridView1";
             advancedDataGridView1.RightToLeft = RightToLeft.No;
             advancedDataGridView1.RowHeadersWidth = 51;
-            advancedDataGridView1.Size = new Size(1746, 845);
+            advancedDataGridView1.Size = new Size(1862, 845);
             advancedDataGridView1.SortStringChangedInvokeBeforeDatasourceUpdate = true;
             advancedDataGridView1.TabIndex = 5;
             // 

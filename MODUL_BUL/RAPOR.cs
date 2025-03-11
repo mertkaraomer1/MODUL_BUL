@@ -1,5 +1,6 @@
 ﻿using MODUL_BUL.Context;
 using System.Data;
+using System.Windows.Forms;
 
 namespace MODUL_BUL.Tables
 {
@@ -201,10 +202,21 @@ namespace MODUL_BUL.Tables
             table.Columns.Clear();
             table.Rows.Clear();
             table.Clear();
+            // "İLERLEME-ÜRETİM" sütununu temizle
+            if (advancedDataGridView1.Columns.Contains("progressColumn"))
+            {
+                advancedDataGridView1.Columns.Remove("progressColumn");
+            }
             table.Columns.Add("SATIR NO");
             table.Columns.Add("PARÇA NO");
             table.Columns.Add("PARÇA ADI");
             table.Columns.Add("ADET");
+            // TextBoxColumn oluştur
+            DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn();
+            column.HeaderText = "İLERLEME-ÜRETİM";
+            column.Name = "progressColumn";
+            advancedDataGridView1.Columns.Add(column);
+
 
             var sonuc = dbContext.URETIM_MALZEME_PLANLAMA
              .Join(dbContext.ISEMIRLERI,
@@ -212,7 +224,7 @@ namespace MODUL_BUL.Tables
                  isem => isem.is_Kod,
                  (ump, isem) => new { Ump = ump, Isem = isem })
              .Where(joined => joined.Isem.is_ProjeKodu == projeKodu &&
-                              joined.Ump.upl_urstokkod == ünitekod&&
+                              joined.Ump.upl_urstokkod == ünitekod &&
                               !joined.Ump.upl_kodu.StartsWith("01."))
              .Join(dbContext.STOKLAR,
                  joined => joined.Ump.upl_kodu, // STOKLAR ile birleştirme koşulu
@@ -231,12 +243,83 @@ namespace MODUL_BUL.Tables
                 table.Rows.Add(sayac++, item.upl_kodu, item.sto_isim, item.upl_miktar);
             }
             advancedDataGridView1.DataSource = table;
+            // CellPainting eventini bağla
+            advancedDataGridView1.CellPainting += advancedDataGridView1_CellPainting_1;
             // Checkbox sütununu güncelle
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
             {
                 bool isChecked = Tcontext.Modul_Bul.Any(m => m.resim_no == row.Cells["PARÇA NO"].Value.ToString() && m.proje_no == projeKodu && (m.modul_no.Substring(0, 13) == ünitekod.Substring(0, 13) || m.modul_no.Substring(0, 13) == ünitekod.Substring(0, 13)) && m.Modul_kod.Substring(0, 13) == ünitekod.Substring(0, 13));
                 row.Cells["checkBoxColumn1"].Value = isChecked; // "T" sütununu güncelle
             }
+
+        }
+        private Dictionary<string, int> progressCache = new Dictionary<string, int>();
+        private void advancedDataGridView1_CellPainting_1(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            string projectCode = textBox1.Text;
+
+            if (e.ColumnIndex >= 0 && advancedDataGridView1.Columns[e.ColumnIndex].Name == "progressColumn" && e.RowIndex >= 0)
+            {
+                e.Handled = true;
+                e.PaintBackground(e.CellBounds, true);
+
+                // PARÇA NO sütunundaki değeri al
+                string modulKod = advancedDataGridView1.Rows[e.RowIndex].Cells["PARÇA NO"].Value?.ToString();
+
+                if (!string.IsNullOrEmpty(modulKod))
+                {
+                    // Cache'den progress değerini al
+                    if (!progressCache.TryGetValue(modulKod, out int eslesmeOrani))
+                    {
+                        // Veritabanından veriyi çek ve cache'e kaydet
+                        var toplamKayitSayisi = dbContext.URETIM_MALZEME_PLANLAMA
+                            .Join(dbContext.ISEMIRLERI,
+                                ump => ump.upl_isemri,
+                                isem => isem.is_Kod,
+                                (ump, isem) => new { ump, isem })
+                            .Where(joined => joined.isem.is_ProjeKodu == projectCode &&
+                                             joined.ump.upl_urstokkod == modulKod + ".01.014")
+                            .Select(joined => joined.ump.upl_kodu)
+                            .ToList();
+
+                        // Eşleşen kayıtları say
+                        int eslesenKayitSayisi = toplamKayitSayisi.Count(s => Tcontext.Modul_Bul
+                            .Any(mb => mb.modul_no == modulKod + ".01.014" && mb.resim_no == s));
+
+                        // Yüzdeyi hesapla
+                        eslesmeOrani = toplamKayitSayisi.Count > 0 ? (int)((double)eslesenKayitSayisi / toplamKayitSayisi.Count * 100) : 0;
+
+                        // Cache'e ekle
+                        progressCache[modulKod] = eslesmeOrani;
+                    }
+
+                    // Progress değeri olarak hücreye yaz
+                    advancedDataGridView1.Rows[e.RowIndex].Cells["progressColumn"].Value = eslesmeOrani;
+
+                    // ProgressBar Çizme
+                    int width = (int)((eslesmeOrani / 100f) * e.CellBounds.Width);
+                    using (Brush brush = new SolidBrush(Color.Green))
+                    {
+                        e.Graphics.FillRectangle(brush, e.CellBounds.X, e.CellBounds.Y + 2, width, e.CellBounds.Height - 4);
+                    }
+
+                    // Yüzdeyi yazdır
+                    using (Brush textBrush = new SolidBrush(Color.Black))
+                    using (StringFormat sf = new StringFormat() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center })
+                    {
+                        e.Graphics.DrawString(eslesmeOrani + "%", e.CellStyle.Font, textBrush, e.CellBounds, sf);
+                    }
+                }
+            }
+        }
+        public class DoubleBufferedDataGridView : DataGridView
+        {
+            public DoubleBufferedDataGridView()
+            {
+                this.DoubleBuffered = true;
+            }
         }
     }
 }
+
+    

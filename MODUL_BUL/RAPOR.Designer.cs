@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RAPOR));
             groupBox1 = new GroupBox();
+            button1 = new Button();
             comboBox2 = new ComboBox();
             comboBox1 = new ComboBox();
             textBox1 = new TextBox();
@@ -39,7 +40,6 @@
             advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             toolStrip1 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
-            button1 = new Button();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)advancedDataGridView1).BeginInit();
             toolStrip1.SuspendLayout();
@@ -59,6 +59,16 @@
             groupBox1.Size = new Size(323, 149);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
+            // 
+            // button1
+            // 
+            button1.Location = new Point(279, 54);
+            button1.Name = "button1";
+            button1.Size = new Size(38, 35);
+            button1.TabIndex = 6;
+            button1.Text = "OK";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
             // 
             // comboBox2
             // 
@@ -117,6 +127,7 @@
             // 
             advancedDataGridView1.AllowUserToAddRows = false;
             advancedDataGridView1.AllowUserToDeleteRows = false;
+            advancedDataGridView1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             advancedDataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             advancedDataGridView1.BackgroundColor = Color.White;
             advancedDataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -131,6 +142,7 @@
             advancedDataGridView1.Size = new Size(860, 614);
             advancedDataGridView1.SortStringChangedInvokeBeforeDatasourceUpdate = true;
             advancedDataGridView1.TabIndex = 1;
+            advancedDataGridView1.CellPainting += advancedDataGridView1_CellPainting_1;
             // 
             // toolStrip1
             // 
@@ -152,16 +164,6 @@
             toolStripButton1.Size = new Size(29, 24);
             toolStripButton1.Text = "toolStripButton1";
             toolStripButton1.Click += toolStripButton1_Click;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(279, 54);
-            button1.Name = "button1";
-            button1.Size = new Size(38, 35);
-            button1.TabIndex = 6;
-            button1.Text = "OK";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
             // 
             // RAPOR
             // 
