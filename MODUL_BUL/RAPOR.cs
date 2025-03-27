@@ -92,6 +92,13 @@ namespace MODUL_BUL.Tables
             table.Columns.Clear();
             table.Rows.Clear();
             table.Clear();
+            // "İLERLEME-ÜRETİM" sütununu temizle
+            if (advancedDataGridView1.Columns.Contains("progressColumn"))
+            {
+                advancedDataGridView1.Columns.Remove("progressColumn");
+            }
+
+
             table.Columns.Add("SATIR NO");
             table.Columns.Add("PARÇA NO");
             table.Columns.Add("PARÇA ADI");
@@ -284,7 +291,7 @@ namespace MODUL_BUL.Tables
 
                         // Eşleşen kayıtları say
                         int eslesenKayitSayisi = toplamKayitSayisi.Count(s => Tcontext.Modul_Bul
-                            .Any(mb => mb.modul_no == modulKod + ".01.014" && mb.resim_no == s));
+                            .Any(mb => mb.modul_no == modulKod + ".01.014" && mb.resim_no == s && mb.proje_no==projectCode));
 
                         // Yüzdeyi hesapla
                         eslesmeOrani = toplamKayitSayisi.Count > 0 ? (int)((double)eslesenKayitSayisi / toplamKayitSayisi.Count * 100) : 0;
