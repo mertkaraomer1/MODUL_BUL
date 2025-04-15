@@ -18,7 +18,7 @@ namespace MODUL_BUL.Context
         {
             // Burada veritabanı bağlantı bilgilerini tanımlayın.
             // Örnek olarak SQL Server kullanalım:
-            string connectionString = "Data Source=SRV-MIKRO;Initial Catalog=MikroDB_V16_ICM;Integrated Security=True;Connect Timeout=10;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+            string connectionString = "Data Source=192.168.2.250;Initial Catalog=MikroDB_V16_ICM;Integrated Security=True;Connect Timeout=10;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
             optionsBuilder.UseSqlServer(connectionString);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
