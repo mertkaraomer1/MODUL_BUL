@@ -30,9 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             label1 = new Label();
-            label2 = new Label();
             textBox1 = new TextBox();
-            textBox2 = new TextBox();
             button1 = new Button();
             advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             button2 = new Button();
@@ -49,46 +47,25 @@
             label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             label1.Location = new Point(19, 46);
             label1.Name = "label1";
-            label1.Size = new Size(109, 20);
+            label1.Size = new Size(114, 20);
             label1.TabIndex = 0;
-            label1.Text = "PROJE KODU :";
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label2.Location = new Point(15, 85);
-            label2.Name = "label2";
-            label2.Size = new Size(113, 20);
-            label2.TabIndex = 1;
-            label2.Text = "PARÇA KODU :";
+            label1.Text = "İŞEMRİ KODU :";
             // 
             // textBox1
             // 
             textBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            textBox1.Location = new Point(126, 43);
+            textBox1.Location = new Point(130, 43);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(162, 27);
             textBox1.TabIndex = 2;
-            // 
-            // textBox2
-            // 
-            textBox2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            textBox2.Location = new Point(126, 82);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(162, 27);
-            textBox2.TabIndex = 3;
+            textBox1.TextChanged += textBox1_TextChanged;
             // 
             // button1
             // 
-            button1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button1.Location = new Point(312, 43);
+            button1.Location = new Point(0, 0);
             button1.Name = "button1";
-            button1.Size = new Size(94, 71);
-            button1.TabIndex = 4;
-            button1.Text = "GETİR";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            button1.Size = new Size(75, 23);
+            button1.TabIndex = 10;
             // 
             // advancedDataGridView1
             // 
@@ -112,7 +89,7 @@
             // button2
             // 
             button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button2.Location = new Point(465, 43);
+            button2.Location = new Point(308, 43);
             button2.Name = "button2";
             button2.Size = new Size(94, 71);
             button2.TabIndex = 6;
@@ -151,9 +128,7 @@
             Controls.Add(button2);
             Controls.Add(advancedDataGridView1);
             Controls.Add(button1);
-            Controls.Add(textBox2);
             Controls.Add(textBox1);
-            Controls.Add(label2);
             Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
@@ -170,9 +145,7 @@
         #endregion
 
         private Label label1;
-        private Label label2;
         private TextBox textBox1;
-        private TextBox textBox2;
         private Button button1;
         private Zuby.ADGV.AdvancedDataGridView advancedDataGridView1;
         private Button button2;

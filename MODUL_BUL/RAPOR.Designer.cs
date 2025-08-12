@@ -40,6 +40,7 @@
             advancedDataGridView1 = new Zuby.ADGV.AdvancedDataGridView();
             toolStrip1 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
+            button2 = new Button();
             groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)advancedDataGridView1).BeginInit();
             toolStrip1.SuspendLayout();
@@ -165,12 +166,24 @@
             toolStripButton1.Text = "toolStripButton1";
             toolStripButton1.Click += toolStripButton1_Click;
             // 
+            // button2
+            // 
+            button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            button2.Location = new Point(778, 35);
+            button2.Name = "button2";
+            button2.Size = new Size(94, 77);
+            button2.TabIndex = 3;
+            button2.Text = "Etiket Bas";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
             // RAPOR
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gray;
             ClientSize = new Size(884, 809);
+            Controls.Add(button2);
             Controls.Add(toolStrip1);
             Controls.Add(advancedDataGridView1);
             Controls.Add(groupBox1);
@@ -200,5 +213,6 @@
         private ToolStrip toolStrip1;
         private ToolStripButton toolStripButton1;
         private Button button1;
+        private Button button2;
     }
 }

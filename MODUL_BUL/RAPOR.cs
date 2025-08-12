@@ -291,7 +291,7 @@ namespace MODUL_BUL.Tables
 
                         // Eşleşen kayıtları say
                         int eslesenKayitSayisi = toplamKayitSayisi.Count(s => Tcontext.Modul_Bul
-                            .Any(mb => mb.modul_no == modulKod + ".01.014" && mb.resim_no == s && mb.proje_no==projectCode));
+                            .Any(mb => mb.modul_no == modulKod + ".01.014" && mb.resim_no == s && mb.proje_no == projectCode));
 
                         // Yüzdeyi hesapla
                         eslesmeOrani = toplamKayitSayisi.Count > 0 ? (int)((double)eslesenKayitSayisi / toplamKayitSayisi.Count * 100) : 0;
@@ -324,6 +324,30 @@ namespace MODUL_BUL.Tables
             public DoubleBufferedDataGridView()
             {
                 this.DoubleBuffered = true;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // Tüm satırlardaki 1. sütun checkbox'ları kontrol edilir
+            bool tumSeciliMi = true;
+
+            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+            {
+                if (row.Cells[0].Value == null || !(bool)row.Cells[0].Value)
+                {
+                    tumSeciliMi = false;
+                    break;
+                }
+            }
+
+            if (tumSeciliMi)
+            {
+                label1.Text = "Tüm kutular işaretli.";
+            }
+            else
+            {
+                label1.Text = "";
             }
         }
     }

@@ -18,5 +18,6 @@ namespace MODUL_BUL.Tables
         public string upl_aciklama { get; set; }
         public double upl_sarfmiktari { get; set; }
         public double upl_miktar { get; set; }
+        public bool upl_uretim_tuket { get; set; }
     }
 }
