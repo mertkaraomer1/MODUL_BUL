@@ -128,23 +128,26 @@ namespace MODUL_BUL
             table.Columns.Add("ÜNÝTE ADI");
             table.Columns.Add("ADET");
 
-            var rsa1 = dbContext.URETIM_MALZEME_PLANLAMA
-                .Join(
-                    dbContext.ISEMIRLERI,
-                    u => u.upl_isemri,
-                    i => i.is_Kod,
-                    (u, i) => new { u, i }
-                )
+            var rsa1 =
+                dbContext.ISEMIRLERI
                 .Join(dbContext.ISEMIRLERI_USER,
-                    ýs => ýs.i.is_Guid,
+                    i => i.is_Guid,
                     iu => iu.Record_uid,
-                    (ýs, iu) => new { ýs, iu })
-                .Where(x => (x.ýs.u.upl_kodu.Contains(".") || x.ýs.u.upl_kodu.StartsWith("DIN")) &&
-                            !string.IsNullOrEmpty(x.ýs.u.upl_urstokkod) && x.ýs.i.is_Kod == projekod
-                            && !string.IsNullOrEmpty(x.ýs.i.is_BagliOlduguIsemri)
-                            && x.iu.is_emri_tipi == "KK_IE")
-                .Select(x => x.ýs.i.is_Kod).Distinct()
+                    (i, iu) => new { i, iu })
+                .Join(dbContext.URETIM_MALZEME_PLANLAMA,
+                    ii => ii.i.is_Kod,
+                    u => u.upl_isemri,
+                    (ii, u) => new { ii.i, ii.iu, u })
+                .Where(x =>
+                    (x.u.upl_kodu.Contains(".") || x.u.upl_kodu.StartsWith("DIN")) &&
+                    !string.IsNullOrEmpty(x.u.upl_urstokkod) &&
+                    x.i.is_Kod == projekod &&
+                    !string.IsNullOrEmpty(x.i.is_BagliOlduguIsemri) &&
+                    x.iu.is_emri_tipi == "KK_IE")
+                .Select(x => x.i.is_Kod)
+                .Distinct()
                 .ToList();
+
 
             var rsa2 = dbContext.URETIM_MALZEME_PLANLAMA
                 .Join(
@@ -172,8 +175,7 @@ namespace MODUL_BUL
             {
                 var rsa3 = dbContext.URETIM_MALZEME_PLANLAMA
                 .Where(x => (x.upl_kodu.Contains(".") || x.upl_kodu.StartsWith("DIN")) &&
-                            resim.is_BagliOlduguIsemri == x.upl_isemri &&
-                            !string.IsNullOrEmpty(x.upl_urstokkod))
+                            resim.is_BagliOlduguIsemri == x.upl_isemri&&x.upl_uretim_tuket == true)
                 .Select(x => new
                 {
                     x.upl_kodu,
