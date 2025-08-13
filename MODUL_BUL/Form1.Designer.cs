@@ -37,15 +37,27 @@
             fontDialog1 = new FontDialog();
             toolStrip1 = new ToolStrip();
             toolStripButton1 = new ToolStripButton();
+            groupBox1 = new GroupBox();
+            radioButton1 = new RadioButton();
+            radioButton2 = new RadioButton();
+            groupBox2 = new GroupBox();
+            label3 = new Label();
+            textBox3 = new TextBox();
+            button4 = new Button();
+            button3 = new Button();
+            label2 = new Label();
+            textBox2 = new TextBox();
             ((System.ComponentModel.ISupportInitialize)advancedDataGridView1).BeginInit();
             toolStrip1.SuspendLayout();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            label1.Location = new Point(19, 46);
+            label1.Location = new Point(8, 23);
             label1.Name = "label1";
             label1.Size = new Size(114, 20);
             label1.TabIndex = 0;
@@ -54,7 +66,7 @@
             // textBox1
             // 
             textBox1.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            textBox1.Location = new Point(130, 43);
+            textBox1.Location = new Point(128, 20);
             textBox1.Name = "textBox1";
             textBox1.Size = new Size(162, 27);
             textBox1.TabIndex = 2;
@@ -89,7 +101,7 @@
             // button2
             // 
             button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            button2.Location = new Point(308, 43);
+            button2.Location = new Point(297, 20);
             button2.Name = "button2";
             button2.Size = new Size(94, 71);
             button2.TabIndex = 6;
@@ -118,18 +130,132 @@
             toolStripButton1.Text = "toolStripButton1";
             toolStripButton1.Click += toolStripButton1_Click;
             // 
+            // groupBox1
+            // 
+            groupBox1.Controls.Add(button2);
+            groupBox1.Controls.Add(label1);
+            groupBox1.Controls.Add(textBox1);
+            groupBox1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            groupBox1.Location = new Point(175, 30);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(405, 97);
+            groupBox1.TabIndex = 11;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "BARKOD ";
+            groupBox1.Visible = false;
+            // 
+            // radioButton1
+            // 
+            radioButton1.AutoSize = true;
+            radioButton1.Location = new Point(28, 39);
+            radioButton1.Name = "radioButton1";
+            radioButton1.Size = new Size(111, 24);
+            radioButton1.TabIndex = 12;
+            radioButton1.TabStop = true;
+            radioButton1.Text = "BARKOD İLE";
+            radioButton1.UseVisualStyleBackColor = true;
+            radioButton1.CheckedChanged += radioButton1_CheckedChanged;
+            // 
+            // radioButton2
+            // 
+            radioButton2.AutoSize = true;
+            radioButton2.Location = new Point(28, 73);
+            radioButton2.Name = "radioButton2";
+            radioButton2.Size = new Size(103, 24);
+            radioButton2.TabIndex = 13;
+            radioButton2.TabStop = true;
+            radioButton2.Text = "KLAVYE İLE";
+            radioButton2.UseVisualStyleBackColor = true;
+            radioButton2.CheckedChanged += radioButton2_CheckedChanged;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(label3);
+            groupBox2.Controls.Add(textBox3);
+            groupBox2.Controls.Add(button4);
+            groupBox2.Controls.Add(button3);
+            groupBox2.Controls.Add(label2);
+            groupBox2.Controls.Add(textBox2);
+            groupBox2.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            groupBox2.Location = new Point(621, 30);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(520, 97);
+            groupBox2.TabIndex = 12;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "KLAVYE";
+            groupBox2.Visible = false;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label3.Location = new Point(8, 56);
+            label3.Name = "label3";
+            label3.Size = new Size(89, 20);
+            label3.TabIndex = 8;
+            label3.Text = "RESİM NO :";
+            // 
+            // textBox3
+            // 
+            textBox3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            textBox3.Location = new Point(123, 53);
+            textBox3.Name = "textBox3";
+            textBox3.Size = new Size(162, 27);
+            textBox3.TabIndex = 9;
+            // 
+            // button4
+            // 
+            button4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            button4.Location = new Point(316, 20);
+            button4.Name = "button4";
+            button4.Size = new Size(94, 71);
+            button4.TabIndex = 7;
+            button4.Text = "GETİR";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // button3
+            // 
+            button3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            button3.Location = new Point(416, 20);
+            button3.Name = "button3";
+            button3.Size = new Size(94, 71);
+            button3.TabIndex = 6;
+            button3.Text = "KAYIT ET";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label2.Location = new Point(8, 23);
+            label2.Name = "label2";
+            label2.Size = new Size(109, 20);
+            label2.TabIndex = 0;
+            label2.Text = "PROJE KODU :";
+            // 
+            // textBox2
+            // 
+            textBox2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            textBox2.Location = new Point(123, 20);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(162, 27);
+            textBox2.TabIndex = 2;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gray;
             ClientSize = new Size(1902, 1033);
+            Controls.Add(groupBox2);
+            Controls.Add(radioButton2);
+            Controls.Add(radioButton1);
+            Controls.Add(groupBox1);
             Controls.Add(toolStrip1);
-            Controls.Add(button2);
             Controls.Add(advancedDataGridView1);
             Controls.Add(button1);
-            Controls.Add(textBox1);
-            Controls.Add(label1);
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
@@ -138,6 +264,10 @@
             ((System.ComponentModel.ISupportInitialize)advancedDataGridView1).EndInit();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
+            groupBox2.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -152,5 +282,15 @@
         private FontDialog fontDialog1;
         private ToolStrip toolStrip1;
         private ToolStripButton toolStripButton1;
+        private GroupBox groupBox1;
+        private RadioButton radioButton1;
+        private RadioButton radioButton2;
+        private GroupBox groupBox2;
+        private Button button4;
+        private Button button3;
+        private Label label2;
+        private TextBox textBox2;
+        private Label label3;
+        private TextBox textBox3;
     }
 }
