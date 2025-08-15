@@ -47,10 +47,16 @@
             button3 = new Button();
             label2 = new Label();
             textBox2 = new TextBox();
+            radioButton3 = new RadioButton();
+            groupBox3 = new GroupBox();
+            button5 = new Button();
+            label4 = new Label();
+            textBox4 = new TextBox();
             ((System.ComponentModel.ISupportInitialize)advancedDataGridView1).BeginInit();
             toolStrip1.SuspendLayout();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
+            groupBox3.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -243,12 +249,70 @@
             textBox2.Size = new Size(162, 27);
             textBox2.TabIndex = 2;
             // 
+            // radioButton3
+            // 
+            radioButton3.AutoSize = true;
+            radioButton3.Location = new Point(28, 103);
+            radioButton3.Name = "radioButton3";
+            radioButton3.Size = new Size(120, 24);
+            radioButton3.TabIndex = 14;
+            radioButton3.TabStop = true;
+            radioButton3.Text = "MONTAJ İÇİN";
+            radioButton3.UseVisualStyleBackColor = true;
+            radioButton3.CheckedChanged += radioButton3_CheckedChanged;
+            // 
+            // groupBox3
+            // 
+            groupBox3.Controls.Add(button5);
+            groupBox3.Controls.Add(label4);
+            groupBox3.Controls.Add(textBox4);
+            groupBox3.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            groupBox3.Location = new Point(1169, 30);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Size = new Size(405, 97);
+            groupBox3.TabIndex = 12;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "MONTAJ";
+            groupBox3.Visible = false;
+            // 
+            // button5
+            // 
+            button5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            button5.Location = new Point(297, 20);
+            button5.Name = "button5";
+            button5.Size = new Size(94, 71);
+            button5.TabIndex = 6;
+            button5.Text = "KAYIT ET";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            label4.Location = new Point(8, 23);
+            label4.Name = "label4";
+            label4.Size = new Size(114, 20);
+            label4.TabIndex = 0;
+            label4.Text = "İŞEMRİ KODU :";
+            // 
+            // textBox4
+            // 
+            textBox4.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            textBox4.Location = new Point(128, 20);
+            textBox4.Name = "textBox4";
+            textBox4.Size = new Size(162, 27);
+            textBox4.TabIndex = 2;
+            textBox4.TextChanged += textBox4_TextChanged;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Gray;
             ClientSize = new Size(1902, 1033);
+            Controls.Add(groupBox3);
+            Controls.Add(radioButton3);
             Controls.Add(groupBox2);
             Controls.Add(radioButton2);
             Controls.Add(radioButton1);
@@ -268,6 +332,8 @@
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
             groupBox2.PerformLayout();
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -292,5 +358,10 @@
         private TextBox textBox2;
         private Label label3;
         private TextBox textBox3;
+        private RadioButton radioButton3;
+        private GroupBox groupBox3;
+        private Button button5;
+        private Label label4;
+        private TextBox textBox4;
     }
 }

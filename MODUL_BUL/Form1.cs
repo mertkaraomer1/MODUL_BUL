@@ -266,7 +266,7 @@ namespace MODUL_BUL
                     ýs => ýs.i.is_Guid,
                     iu => iu.Record_uid,
                     (ýs, iu) => new { ýs, iu })
-                .Where(x => x.ýs.u.upl_kodu.Contains(".") && !x.ýs.u.upl_kodu.StartsWith("DIN") &&
+                .Where(x => x.ýs.u.upl_kodu.Contains(".") &&
                             !string.IsNullOrEmpty(x.ýs.u.upl_urstokkod) && x.ýs.i.is_ProjeKodu == projekod
                             && !string.IsNullOrEmpty(x.ýs.i.is_BagliOlduguIsemri)
                             && x.iu.is_emri_tipi == "KK_IE")
@@ -280,9 +280,7 @@ namespace MODUL_BUL
                     i => i.is_Kod,
                     (u, i) => new { u, i }
                 )
-                .Where(x => x.u.upl_kodu.Contains(".") &&
-                            !x.u.upl_kodu.StartsWith("DIN") &&
-                            rsa1.Contains(x.u.upl_isemri) &&
+                .Where(x => rsa1.Contains(x.u.upl_isemri) &&
                             !string.IsNullOrEmpty(x.u.upl_urstokkod) &&
                             x.i.is_ProjeKodu == projekod &&
                             x.u.upl_kodu == resimno)
@@ -400,6 +398,134 @@ namespace MODUL_BUL
                     // Hata ayrýntýlarýný yazdýr
                     MessageBox.Show($"Hata: {ex.InnerException?.Message}");
                 }
+            }
+        }
+
+        private void radioButton3_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButton2.Checked == true)
+            {
+                groupBox1.Visible = false;
+                groupBox2.Visible = false;
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+            string projekod = textBox4.Text.Trim();
+
+            // Sadece 13 karakter olduðunda sorgu yap
+            if (projekod.Length != 13)
+            {
+                table.Columns.Clear();
+                table.Rows.Clear();
+                table.Clear();
+                return; // 13 deðilse hiçbir þey yapma
+            }
+
+            table.Columns.Add("SATIR NO");
+            table.Columns.Add("PROJE KODU");
+            table.Columns.Add("RESÝM NO");
+            table.Columns.Add("MODÜL NO");
+            table.Columns.Add("MODÜL2 NO");
+            table.Columns.Add("ÜNÝTE ADI");
+            table.Columns.Add("ADET");
+
+            var rsa1 =
+                dbContext.ISEMIRLERI
+                .Join(dbContext.ISEMIRLERI_USER,
+                    i => i.is_Guid,
+                    iu => iu.Record_uid,
+                    (i, iu) => new { i, iu })
+                .Join(dbContext.URETIM_MALZEME_PLANLAMA,
+                    ii => ii.i.is_Kod,
+                    u => u.upl_isemri,
+                    (ii, u) => new { ii.i, ii.iu, u })
+                .Where(x =>
+                    (x.u.upl_kodu.Contains(".") || x.u.upl_kodu.StartsWith("DIN")) &&
+                    !string.IsNullOrEmpty(x.u.upl_urstokkod) &&
+                    x.i.is_Kod == projekod &&
+                    !string.IsNullOrEmpty(x.i.is_BagliOlduguIsemri) &&
+                    x.iu.is_emri_tipi == "KK_IE")
+                .Select(x => x.i.is_Kod)
+                .Distinct()
+                .ToList();
+
+
+            var rsa2 = dbContext.URETIM_MALZEME_PLANLAMA
+                .Join(
+                    dbContext.ISEMIRLERI,
+                    u => u.upl_isemri,
+                    i => i.is_Kod,
+                    (u, i) => new { u, i }
+                )
+                .Where(x => (x.u.upl_kodu.Contains(".") || x.u.upl_kodu.StartsWith("DIN")) &&
+                            rsa1.Contains(x.u.upl_isemri) &&
+                            string.IsNullOrEmpty(x.u.upl_urstokkod) &&
+                            x.i.is_Kod == projekod &&
+                            x.u.upl_isemri == projekod && x.u.upl_uretim_tuket == true)
+                .Select(x => new
+                {
+                    x.i.is_BagliOlduguIsemri,
+                    x.u.upl_kodu,
+                    x.u.upl_miktar,
+                    x.i.is_ProjeKodu
+                }).Distinct()
+                .ToList();
+
+            int sayac = 1;
+            foreach (var resim in rsa2)
+            {
+                var rsa3 = dbContext.URETIM_MALZEME_PLANLAMA
+                .Where(x => (x.upl_kodu.Contains(".") || x.upl_kodu.StartsWith("DIN")) &&
+                            resim.is_BagliOlduguIsemri == x.upl_isemri && x.upl_uretim_tuket == true)
+                .Select(x => new
+                {
+                    x.upl_kodu,
+                    x.upl_urstokkod,
+                    isemri = x.upl_isemri.Substring(0, 8)
+                }).FirstOrDefault();
+
+                var rsa4 = dbContext.URETIM_MALZEME_PLANLAMA
+                    .Where(x =>
+                        !string.IsNullOrEmpty(x.upl_urstokkod) &&
+                        !string.IsNullOrEmpty(x.upl_kodu) &&
+                        !string.IsNullOrEmpty(x.upl_isemri) &&
+                        x.upl_kodu.Contains(rsa3.upl_urstokkod.Length >= 13 ? rsa3.upl_urstokkod.Substring(0, 13) : rsa3.upl_urstokkod) &&
+                        (x.upl_kodu.Contains(".") || x.upl_kodu.StartsWith("DIN")) &&
+                        x.upl_isemri.Length >= 8 && x.upl_isemri.Substring(0, 8) == rsa3.isemri
+                    )
+                    .Select(x => new
+                    {
+                        x.upl_urstokkod
+                    })
+                    .FirstOrDefault();
+
+                var stokVerisi = dbContext.STOKLAR.FirstOrDefault(stok => stok.sto_kod == rsa4.upl_urstokkod);
+
+                table.Rows.Add(
+                    sayac++,
+                    resim.is_ProjeKodu,
+                    resim.upl_kodu,
+                    rsa3.upl_kodu,
+                    rsa4.upl_urstokkod,
+                    stokVerisi.sto_isim,
+                    resim.upl_miktar
+                );
+            }
+
+            advancedDataGridView1.DataSource = table;
+
+            // Checkbox'larý tikle
+            foreach (DataGridViewRow row in advancedDataGridView1.Rows)
+            {
+                if (!row.IsNewRow)
+                    row.Cells["checkBoxColumn1"].Value = true;
             }
         }
     }
