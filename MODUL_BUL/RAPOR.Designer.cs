@@ -137,7 +137,6 @@
             advancedDataGridView1.Location = new Point(12, 183);
             advancedDataGridView1.MaxFilterButtonImageHeight = 23;
             advancedDataGridView1.Name = "advancedDataGridView1";
-            advancedDataGridView1.ReadOnly = true;
             advancedDataGridView1.RightToLeft = RightToLeft.No;
             advancedDataGridView1.RowHeadersWidth = 51;
             advancedDataGridView1.Size = new Size(860, 614);
@@ -173,7 +172,7 @@
             button2.Name = "button2";
             button2.Size = new Size(94, 77);
             button2.TabIndex = 3;
-            button2.Text = "Etiket Bas";
+            button2.Text = "KAYIT ET";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 

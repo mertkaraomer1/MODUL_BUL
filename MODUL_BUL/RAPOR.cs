@@ -329,26 +329,56 @@ namespace MODUL_BUL.Tables
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // Tüm satırlardaki 1. sütun checkbox'ları kontrol edilir
-            bool tumSeciliMi = true;
-
+            string projeKodu = textBox1.Text;
+            string ünitekod = comboBox1.Text;
+            string modülKod = comboBox2.Text;
+            int eklenenKayitSayisi = 0; // Kaç kayıt eklendiğini tutmak için
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
             {
-                if (row.Cells[0].Value == null || !(bool)row.Cells[0].Value)
+                bool isChecked = Convert.ToBoolean(row.Cells["checkBoxColumn1"].Value ?? false);
+
+                if (isChecked)
                 {
-                    tumSeciliMi = false;
-                    break;
+                    // DataGridView'den alanları al
+                    string parcaNo = row.Cells["PARÇA NO"].Value?.ToString() ?? "";
+                    string satırNo = row.Cells["SATIR NO"].Value?.ToString() ?? "";
+
+                    int adet = 0;
+                    if (int.TryParse(row.Cells["ADET"].Value?.ToString(), out int parsedAdet))
+                        adet = parsedAdet;
+
+                    // Veritabanında kayıt var mı kontrol et
+                    bool exists = Tcontext.Modul_Bul.Any(m =>
+                        m.proje_no == projeKodu &&
+                        m.Modul_kod == ünitekod &&
+                        m.modul_no == modülKod &&
+                        m.resim_no == parcaNo
+                    );
+
+                    // Eğer yoksa ekle
+                    if (!exists)
+                    {
+                        Modul_Bul yeniModul = new Modul_Bul
+                        {
+                            proje_no = projeKodu,
+                            Modul_kod = ünitekod,
+                            modul_no = modülKod,
+                            resim_no = parcaNo,
+                            Satır_no = satırNo,  // Sütun adını tablona göre ayarla
+                            Adet = adet          // Sütun adını tablona göre ayarla
+                        };
+
+                        Tcontext.Modul_Bul.Add(yeniModul);
+                        eklenenKayitSayisi++;
+                    }
                 }
             }
 
-            if (tumSeciliMi)
-            {
-                label1.Text = "Tüm kutular işaretli.";
-            }
-            else
-            {
-                label1.Text = "";
-            }
+            // Değişiklikleri kaydet
+            Tcontext.SaveChanges();
+            // Mesaj kutusu
+            MessageBox.Show($"{eklenenKayitSayisi} adet yeni kayıt eklendi.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
     }
 }
