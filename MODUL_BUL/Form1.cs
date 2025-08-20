@@ -357,7 +357,7 @@ namespace MODUL_BUL
                     {
                         // Veritabanýnda kayýt olup olmadýðýný kontrol et
                         var existingEntry = context.Modul_Bul
-                            .FirstOrDefault(m => m.proje_no == projeno && m.resim_no == resimno && m.modul_no == modülno && m.Satýr_no == satýrno);
+                            .FirstOrDefault(m => m.proje_no == projeno && m.resim_no == resimno && m.modul_no == modülno && m.Modul_kod == modulkod && m.Satýr_no == satýrno);
 
                         // Eðer kayýt yoksa yeni bir Modul_Bul nesnesi oluþtur
                         if (existingEntry == null)
@@ -379,7 +379,7 @@ namespace MODUL_BUL
                     else
                     {
                         // Checkbox boþsa veritabanýnda varsa sil
-                        var existingEntry = context.Modul_Bul.FirstOrDefault(m => m.proje_no == projeno && m.resim_no == resimno && m.modul_no == modülno && m.Satýr_no == satýrno);
+                        var existingEntry = context.Modul_Bul.FirstOrDefault(m => m.proje_no == projeno && m.resim_no == resimno && m.modul_no == modülno &&m.Modul_kod==modulkod&& m.Satýr_no == satýrno&&m.Adet==adet);
 
                         if (existingEntry != null)
                         {
