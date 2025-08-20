@@ -288,6 +288,7 @@ namespace MODUL_BUL
                     x.i.is_BagliOlduguIsemri,
                     x.u.upl_kodu,
                     x.u.upl_miktar,
+                   iskod= x.i.is_Kod.Substring(0, 8)
                 }).Distinct()
                 .ToList();
 
@@ -308,8 +309,9 @@ namespace MODUL_BUL
 
                 // Ýlk sorgudan deðer al
                 var rsa4 = dbContext.URETIM_MALZEME_PLANLAMA
-                    .Where(x => EF.Functions.Like(x.upl_kodu, "%" + rsa3 + "%") &&
+                    .Where(x => x.upl_kodu==rsa3.Substring(0,13)&&
                                 x.upl_kodu.Contains(".") &&
+                                x.upl_isemri.Substring(0,8)==resim.iskod&&
                                 !string.IsNullOrEmpty(x.upl_urstokkod))
                     .Select(x => x.upl_urstokkod)  // sadece string al
                     .FirstOrDefault();
