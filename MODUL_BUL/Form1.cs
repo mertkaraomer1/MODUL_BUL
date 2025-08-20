@@ -306,18 +306,31 @@ namespace MODUL_BUL
                                     !string.IsNullOrEmpty(x.upl_urstokkod))
                         .Select(x => x.upl_urstokkod).FirstOrDefault();
 
+                // Ýlk sorgudan deðer al
                 var rsa4 = dbContext.URETIM_MALZEME_PLANLAMA
-                    .Where(x => x.upl_kodu==rsaefect && x.upl_kodu.Contains(".") &&x.upl_isemri.Substring(0,8)==resim.is_BagliOlduguIsemri.Substring(0,8)&&
+                    .Where(x => EF.Functions.Like(x.upl_kodu, "%" + rsa3 + "%") &&
+                                x.upl_kodu.Contains(".") &&
                                 !string.IsNullOrEmpty(x.upl_urstokkod))
-                    .Select(x => new
-                    {
-                        x.upl_urstokkod
-                    }).FirstOrDefault();
-                // STOKLAR tablosundan sto_kod ile eþleþen veriyi bul
-                var stokVerisi = dbContext.STOKLAR.FirstOrDefault(stok => stok.sto_kod == rsa4.upl_urstokkod);
+                    .Select(x => x.upl_urstokkod)  // sadece string al
+                    .FirstOrDefault();
+
+                STOKLAR stokVerisi = null;  // önce null tanýmla
+
+                if (rsa4 != null)
+                {
+                    stokVerisi = dbContext.STOKLAR
+                        .FirstOrDefault(stok => stok.sto_kod == rsa4);
+                }
 
                 // Satýrý ekle ve checkbox durumunu ayarla
-                table.Rows.Add(sayac++, resim.upl_kodu, rsa3, rsa4.upl_urstokkod, stokVerisi.sto_isim, resim.upl_miktar);
+                table.Rows.Add(
+                    sayac++,
+                    resim.upl_kodu,
+                    rsa3,
+                    rsa4,
+                    stokVerisi?.sto_isim ?? "",   // null ise boþ string
+                    resim.upl_miktar
+                );
             }
 
             advancedDataGridView1.DataSource = table;
