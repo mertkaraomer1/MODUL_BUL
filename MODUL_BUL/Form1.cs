@@ -179,7 +179,6 @@ namespace MODUL_BUL
                 .Select(x => new
                 {
                     x.upl_kodu,
-                    x.upl_urstokkod,
                     isemri = x.upl_isemri.Substring(0, 8)
                 }).FirstOrDefault();
 
@@ -188,7 +187,7 @@ namespace MODUL_BUL
                         !string.IsNullOrEmpty(x.upl_urstokkod) &&
                         !string.IsNullOrEmpty(x.upl_kodu) &&
                         !string.IsNullOrEmpty(x.upl_isemri) &&
-                        x.upl_kodu.Contains(rsa3.upl_urstokkod.Length >= 13 ? rsa3.upl_urstokkod.Substring(0, 13) : rsa3.upl_urstokkod) &&
+                        x.upl_kodu.Contains(rsa3.upl_kodu.Substring(0,13)) &&
                         (x.upl_kodu.Contains(".") || x.upl_kodu.StartsWith("DIN")) &&
                         x.upl_isemri.Length >= 8 && x.upl_isemri.Substring(0, 8) == rsa3.isemri
                     )
@@ -299,14 +298,16 @@ namespace MODUL_BUL
                 .Where(x => x.upl_kodu.Contains(".") &&
                             resim.is_BagliOlduguIsemri == x.upl_isemri &&
                             !string.IsNullOrEmpty(x.upl_urstokkod))
-                .Select(x => new
-                {
-                    x.upl_kodu,
-                    x.upl_urstokkod,
-                }).FirstOrDefault();
+                .Select(x =>x.upl_kodu).FirstOrDefault();
+
+                var rsaefect = dbContext.URETIM_MALZEME_PLANLAMA
+                        .Where(x => x.upl_kodu.Contains(".") &&
+                                    resim.is_BagliOlduguIsemri == x.upl_isemri &&
+                                    !string.IsNullOrEmpty(x.upl_urstokkod))
+                        .Select(x => x.upl_urstokkod).FirstOrDefault();
 
                 var rsa4 = dbContext.URETIM_MALZEME_PLANLAMA
-                    .Where(x => x.upl_kodu.Contains(rsa3.upl_urstokkod.Substring(0, 13)) && x.upl_kodu.Contains(".") &&
+                    .Where(x => x.upl_kodu==rsaefect && x.upl_kodu.Contains(".") &&x.upl_isemri.Substring(0,8)==resim.is_BagliOlduguIsemri.Substring(0,8)&&
                                 !string.IsNullOrEmpty(x.upl_urstokkod))
                     .Select(x => new
                     {
@@ -316,7 +317,7 @@ namespace MODUL_BUL
                 var stokVerisi = dbContext.STOKLAR.FirstOrDefault(stok => stok.sto_kod == rsa4.upl_urstokkod);
 
                 // Satýrý ekle ve checkbox durumunu ayarla
-                table.Rows.Add(sayac++, resim.upl_kodu, rsa3.upl_kodu, rsa4.upl_urstokkod, stokVerisi.sto_isim, resim.upl_miktar);
+                table.Rows.Add(sayac++, resim.upl_kodu, rsa3, rsa4.upl_urstokkod, stokVerisi.sto_isim, resim.upl_miktar);
             }
 
             advancedDataGridView1.DataSource = table;
@@ -324,8 +325,12 @@ namespace MODUL_BUL
             // Checkbox sütununu güncelle
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
             {
-                bool isChecked = Tcontext.Modul_Bul.Any(m => m.resim_no == row.Cells["RESÝM NO"].Value.ToString() && m.proje_no == projekod &&
-                m.modul_no == row.Cells["MODÜL NO"].Value.ToString() && m.Satýr_no == row.Cells["SATIR NO"].Value.ToString());
+                bool isChecked = Tcontext.Modul_Bul.Any(
+                    m => m.resim_no == row.Cells["RESÝM NO"].Value.ToString() &&
+                m.proje_no == projekod &&
+                m.modul_no == row.Cells["MODÜL NO"].Value.ToString() &&
+                m.Modul_kod == row.Cells["MODÜL2 NO"].Value.ToString() &&
+                m.Satýr_no == row.Cells["SATIR NO"].Value.ToString());
                 row.Cells["checkBoxColumn1"].Value = isChecked; // "T" sütununu güncelle
             }
 

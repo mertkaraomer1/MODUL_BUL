@@ -203,10 +203,9 @@
             // 
             // textBox3
             // 
-            textBox3.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            textBox3.Location = new Point(123, 53);
+            textBox3.Location = new Point(123, 51);
             textBox3.Name = "textBox3";
-            textBox3.Size = new Size(162, 27);
+            textBox3.Size = new Size(162, 30);
             textBox3.TabIndex = 9;
             // 
             // button4

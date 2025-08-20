@@ -134,8 +134,20 @@ namespace MODUL_BUL.Tables
             // Checkbox sütununu güncelle
             foreach (DataGridViewRow row in advancedDataGridView1.Rows)
             {
-                bool isChecked = Tcontext.Modul_Bul.Any(m => m.resim_no == row.Cells["PARÇA NO"].Value.ToString() && m.proje_no == projeKodu && (m.modul_no.Substring(0, 13) == modülkod.Substring(0, 13) || m.Modul_kod.Substring(0, 13) == modülkod.Substring(0, 13)) && m.Modul_kod.Substring(0, 13) == ünitekod.Substring(0, 13));
-                row.Cells["checkBoxColumn1"].Value = isChecked; // "T" sütununu güncelle
+                int adet = Convert.ToInt32(row.Cells["Adet"].Value);
+
+                bool isChecked = Tcontext.Modul_Bul.Any(m =>
+                    m.resim_no == row.Cells["PARÇA NO"].Value.ToString() &&
+                    m.proje_no == projeKodu &&
+                    (
+                        m.modul_no.StartsWith(modülkod.Substring(0, 13)) ||
+                        m.Modul_kod.StartsWith(modülkod.Substring(0, 13))
+                    ) &&
+                    m.Modul_kod.StartsWith(ünitekod.Substring(0, 13)) &&
+                    m.Adet == adet
+                );
+
+                row.Cells["checkBoxColumn1"].Value = isChecked;
             }
 
         }
